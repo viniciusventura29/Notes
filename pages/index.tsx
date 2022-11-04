@@ -38,7 +38,8 @@ export default function Home({ notes }: Notes) {
         fetch("http://localhost:3000/api/create", {
           body: JSON.stringify(data),
           headers: {
-            "Content-Type": "application/json",
+            'Access-Control-Allow-Origin': '*',
+            "Content-Type": "application/json"
           },
           method: "POST",
         }).then(() => {
