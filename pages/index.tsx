@@ -33,7 +33,7 @@ export default function Home({ notes }: Notes) {
     if (darkMode === true){
       return(
           <button onClick={()=>setDarkMode(false)} >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="text-gray-200 border-2 ml-6 mt-6 p-2 w-14 rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="transition duration-500 ease-in-out text-gray-200 ml-6 mt-6 p-3 w-14 rounded-lg">
               <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
             </svg>
           </button>
@@ -43,7 +43,7 @@ export default function Home({ notes }: Notes) {
     }else{
       return(
           <button onClick={()=>setDarkMode(true)}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="text-black border-black border-2 mt-6 ml-6 p-2 w-14 rounded">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="transition duration-500 ease-in-out text-black mt-6 ml-6 p-3 w-14 rounded-lg">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
             </svg>
           </button>
@@ -108,10 +108,10 @@ export default function Home({ notes }: Notes) {
 
   return (
     <div className={` ${darkMode && "dark"}`}>
-      <div className="min-h-screen bg-gray-100 dark:bg-slate-900">
+      <div className="transition duration-700 ease-in-out min-h-screen bg-gray-100 dark:bg-slate-900">
         
         {toggleDarkMode()}
-        <h1 className="text-center dark:text-white font-bold text-2xl mt-4">
+        <h1 className="transition duration-700 ease-in-out text-center dark:text-white font-bold text-2xl mt-4">
           Notes
         </h1>
         <form
@@ -126,13 +126,13 @@ export default function Home({ notes }: Notes) {
             placeholder="Title"
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
-            className="border-2 rounded border-gray-600 p-2 border-gray-500 dark:text-gray-200 dark:bg-slate-800"
+            className="transition duration-700 ease-in-out border-2 rounded border-gray-600 p-2 border-gray-500 dark:text-gray-200 dark:bg-slate-800"
           />
           <textarea
             placeholder="Content"
             value={form.content}
             onChange={(e) => setForm({ ...form, content: e.target.value })}
-            className="resize-none h-28 border-2 rounded border-gray-600 p-2 border-gray-500 dark:text-gray-200 dark:bg-slate-800"
+            className="transition duration-700 ease-in-out resize-none h-28 border-2 rounded border-gray-600 p-2 border-gray-500 dark:text-gray-200 dark:bg-slate-800"
           />
 
           <button type="submit" className="bg-blue-500 text-white rounded p-1">
@@ -140,7 +140,7 @@ export default function Home({ notes }: Notes) {
           </button>
         </form>
 
-        <div className="w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch dark:text-gray-200">
+        <div className="transition duration-700 ease-in-out w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch dark:text-gray-200">
           <ul>
             {notes.map((note) => (
               <li key={note.id} className="border-b border-gray-600 p-2">
