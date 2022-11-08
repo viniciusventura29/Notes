@@ -57,8 +57,8 @@ export default function Home({ notes }: Notes) {
   };
 
   async function create(data: FormData) {
-    if (data.content === "" || data.content === "") {
-      console.log("Não SEU MAMACO");
+    if (data.content === "" || data.title === "") {
+      console.log("O titulo ou o corpo da mensagem não podem ser vazios!");
     } else {
       try {
         fetch("/api/create", {
