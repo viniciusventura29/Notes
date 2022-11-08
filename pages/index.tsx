@@ -2,6 +2,7 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { stringify } from "querystring";
 import { useState } from "react";
+import { Card } from "../components/card";
 import { prisma } from "../lib/prisma";
 
 interface Notes {
@@ -12,7 +13,7 @@ interface Notes {
   }[];
 }
 
-interface FormData {
+export interface FormData {
   title: string;
   content: string;
   id: string;
@@ -143,33 +144,11 @@ export default function Home({ notes }: Notes) {
         <div className="transition duration-700 ease-in-out w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch dark:text-gray-200">
           <ul>
             {notes.map((note) => (
-              <li key={note.id} className="border-b border-gray-600 p-2">
-                <div className="flex justify-between">
-                  <div className="flex-1">
-                    <h3 className="font-bold">{note.title}</h3>
-                    <p className="text-sm pr-6">{note.content}</p>
-                  </div>
-                  <button
-                    onClick={() =>
-                      setForm({
-                        title: note.title,
-                        content: note.content,
-                        id: note.id,
-                      })
-                    }
-                    className="bg-blue-500 mr-3 px-3 text-white rounded"
-                  >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => deleteNote(note.id)}
-                    className="bg-red-500 px-3 text-white rounded"
-                  >
-                    X
-                  </button>
-                </div>
-              </li>
+
+              <Card note={note} setForm={setForm} deleteNote={deleteNote} />
+          
             ))}
+            
           </ul>
         </div>
       </div>
