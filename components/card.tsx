@@ -16,9 +16,9 @@ export function Card({ note, setForm, deleteNote }: cardProps) {
   const modalComponent = (id: string, content: string, title: string) => {
     if (modal === true) {
       return (
-        <div className="bg-gray-300 dark:bg-slate-800 w-[50rem] h-[40rem] top-[calc(50%-20rem)] left-[calc(50%-25rem)] px-8 py-6 fixed rounded-lg">
-          <div className="flex justify-between">{title} <button className="px-2 bg-red-500 rounded" onClick={()=>setModal(false)}>X</button></div>
-          {content}
+        <div className="shadow-lg bg-gray-300 dark:bg-slate-800 w-[50rem] h-[40rem] top-[calc(50%-20rem)] left-[calc(50%-25rem)] px-8 py-6 fixed rounded-lg">
+          <div className="flex justify-between font-bold text-xl">{title} <button className="px-2 bg-red-500 rounded text-sm text-gray-50" onClick={()=>setModal(false)}>X</button></div>
+          <p className="bg-gray-100 p-2 rounded-lg h-40 mt-10">{content}</p>
         </div>
       )
     } else {
@@ -29,7 +29,7 @@ export function Card({ note, setForm, deleteNote }: cardProps) {
   return (
     <li key={note.id} className="border-b border-gray-600 p-2">
       <div onClick={() => setModal(!modal)} className="flex justify-between">
-        <div className="flex-1">
+        <div className="flex-1 h-12 overflow-hidden">
           <h3 className="font-bold">{note.title}</h3>
           <p className="text-sm pr-6">{note.content}</p>
         </div>
