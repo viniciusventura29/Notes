@@ -147,7 +147,7 @@ export default function Home({ notes }: Notes) {
                 <div className="flex justify-between">
                   <div className="flex-1">
                     <h3 className="font-bold">{note.title}</h3>
-                    <p className="text-sm">{note.content}</p>
+                    <p className="text-sm pr-6">{note.content}</p>
                   </div>
                   <button
                     onClick={() =>
