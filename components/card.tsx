@@ -15,7 +15,12 @@ export function Card({ note, setForm, deleteNote }: cardProps) {
 
   const modalComponent = (id: string, content: string, title: string) => {
     if (modal === true) {
-      return <div className="bg-gray-500 w-[50rem] h-[30rem] absolute top-32 left-3/">Teste {id}</div>;
+      return (
+        <div className="bg-gray-300 dark:bg-slate-800 w-[50rem] h-[40rem] top-[calc(50%-20rem)] left-[calc(50%-25rem)] px-8 py-6 fixed rounded-lg">
+          <div className="flex justify-between">{title} <button className="px-2 bg-red-500 rounded" onClick={()=>setModal(false)}>X</button></div>
+          {content}
+        </div>
+      )
     } else {
       null;
     }
