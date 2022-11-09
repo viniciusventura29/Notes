@@ -39,7 +39,7 @@ export default function Home({ notes }: Notes) {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="transition duration-500 ease-in-out text-gray-200 ml-6 mt-6 p-3 w-14 rounded-lg"
+            className="transition duration-500 ease-in-out text-gray-200 ml-6 hover:text-gray-400 mt-6 p-3 w-14 rounded-lg"
           >
             <path
               strokeLinecap="round"
@@ -58,7 +58,7 @@ export default function Home({ notes }: Notes) {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="transition duration-500 ease-in-out text-black mt-6 ml-6 p-3 w-14 rounded-lg"
+            className="transition duration-500 ease-in-out text-black hover:text-gray-600 mt-6 ml-6 p-3 w-14 rounded-lg"
           >
             <path
               strokeLinecap="round"
@@ -125,8 +125,6 @@ export default function Home({ notes }: Notes) {
     }
   };
 
-  const [blackBackground, setBlackBackground] = useState(false);
-
   return (
     <div className={` ${darkMode && "dark"}`}>
       <div
@@ -156,7 +154,7 @@ export default function Home({ notes }: Notes) {
             className="transition duration-700 ease-in-out resize-none h-28 border-2 rounded border-gray-600 p-2 border-gray-500 dark:text-gray-200 dark:bg-slate-800"
           />
 
-          <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white rounded p-1">
+          <button type="submit" className="bg-blue-500 hover:bg-blue-600 duration-500 text-white rounded p-1">
             Add +
           </button>
         </form>
