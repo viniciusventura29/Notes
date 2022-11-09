@@ -47,7 +47,7 @@ export function Card({ note, setForm, deleteNote }: cardProps) {
             <p className="text-sm">
               {note.content}
             </p>
-            <p className="w-10 lg:w-40 text-sm italic font-semibold lg:ml-10">{thereMore}</p>
+            <p className="w-10 lg:w-40 text-xs italic font-semibold lg:ml-10">{thereMore}</p>
             </div>
           </div>
           <button
