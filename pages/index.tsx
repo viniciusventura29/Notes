@@ -156,7 +156,7 @@ export default function Home({ notes }: Notes) {
             className="transition duration-700 ease-in-out resize-none h-28 border-2 rounded border-gray-600 p-2 border-gray-500 dark:text-gray-200 dark:bg-slate-800"
           />
 
-          <button type="submit" className="bg-blue-500 text-white rounded p-1">
+          <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white rounded p-1">
             Add +
           </button>
         </form>
