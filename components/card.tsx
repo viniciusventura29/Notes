@@ -27,7 +27,7 @@ export function Card({ note, setForm, deleteNote }: cardProps) {
 
   function callModal() {
     if (modalComponent === true) {
-      return <Modal note={note} />;
+      return <Modal setModalComponent={setModalComponent} note={note} />;
     } else {
       null;
     }
@@ -36,12 +36,10 @@ export function Card({ note, setForm, deleteNote }: cardProps) {
   return (
     <>
     {verifyLengthContent()}
-      <li key={note.id} className="border-b border-gray-600 p-2">
-        <div
-          onClick={() => setModalComponent(!modalComponent)}
-          className="cursor-pointer flex justify-between"
-        >
-          <div className="flex-1 h-12 overflow-hidden">
+      <div key={note.id} className="border-b border-gray-600 p-2">
+        {callModal()}
+        <div className="cursor-pointer flex justify-between">
+          <div onClick={() => setModalComponent(true)} className="flex-1 h-12 overflow-hidden">
             <h3 className="font-bold">{note.title}</h3>
             <div className="flex">
             <p className="text-sm">
@@ -68,9 +66,9 @@ export function Card({ note, setForm, deleteNote }: cardProps) {
           >
             X
           </button>
-          {callModal()}
+          
         </div>
-      </li>
+      </div>
     </>
   );
 }

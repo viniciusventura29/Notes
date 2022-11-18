@@ -160,11 +160,11 @@ export default function Home({ notes }: Notes) {
         </form>
         
         <div className="transition duration-700 ease-in-out w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch dark:text-gray-200">
-          <ul className="mb-12">
+          <div className="mb-12">
             {notes.map((note) => (
                 <Card note={note} setForm={setForm} deleteNote={deleteNote} />
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     </div>
