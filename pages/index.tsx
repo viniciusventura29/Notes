@@ -25,6 +25,7 @@ export default function Home({ notes }: Notes) {
     content: "",
     id: "",
   });
+  const [popUp, setPopUp] = useState(false)
   const router = useRouter();
 
   const [darkMode, setDarkMode] = useState(false);
@@ -77,7 +78,7 @@ export default function Home({ notes }: Notes) {
 
   async function create(data: FormData) {
     if (data.content === "" || data.title === "") {
-      console.log("O titulo ou o corpo da mensagem não podem ser vazios!");
+      setPopUp(true)
     } else {
       try {
         fetch("/api/create", {
@@ -125,8 +126,19 @@ export default function Home({ notes }: Notes) {
     }
   };
 
+  function popMessage(){
+      if (popUp){
+        return <div className="absolute transition duration-700 ease-in-out px-10 py-6 top-10 rounded-sm right-3 dark:border-red-600 border-red-500 border-r-[10px] dark:bg-slate-800 bg-slate-200 font-bold dark:text-slate-50 text-slate-800">O titulo ou o corpo da mensagem não podem ser vazios!</div>
+      }
+      else{
+        null
+      }
+  }
+
   return (
     <div className={` ${darkMode && "dark"}`}>
+      <title>Ventura Notes</title>
+      {popMessage()}
       <div
         className="transition duration-700 ease-in-out min-h-screen bg-gray-100 dark:bg-slate-900">
         {toggleDarkMode()}
