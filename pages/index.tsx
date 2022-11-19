@@ -129,7 +129,7 @@ export default function Home({ notes }: Notes) {
   function popMessage(){
       if (popUp){
         timer()
-        return <div className="absolute transition duration-700 ease-in-out px-10 py-6 top-10 rounded-sm right-3 dark:border-red-600 border-red-500 border-r-[10px] dark:bg-slate-800 bg-slate-200 font-bold dark:text-slate-50 text-slate-800">O titulo ou o corpo da mensagem não podem ser vazios!</div>
+        return <div className="fixed lg:absolute transition duration-700 p-2 ease-in-out lg:px-10 lg:py-6 lg:top-10 rounded-b-sm lg:rounded-sm lg:right-3 dark:border-red-600 border-red-500 lg:border-r-[10px] dark:bg-red-600 bg-red-400 lg:dark:bg-slate-800 lg:bg-slate-200 font-bold dark:text-slate-50 text-slate-800">O titulo ou o corpo da mensagem não podem ser vazios!</div>
       }
       else{
         null
@@ -139,7 +139,7 @@ export default function Home({ notes }: Notes) {
   function timer(){
     setTimeout(() => {
       setPopUp(false);
-  }, 5000);
+  }, 6000);
   }
 
   return (
