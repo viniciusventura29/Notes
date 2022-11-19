@@ -22,7 +22,6 @@ export function Card({ note, setForm, deleteNote }: cardProps) {
     }else{
       null
     }
-    console.log(thereMore)
   }
 
   function callModal() {
