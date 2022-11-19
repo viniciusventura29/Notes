@@ -128,11 +128,18 @@ export default function Home({ notes }: Notes) {
 
   function popMessage(){
       if (popUp){
+        timer()
         return <div className="absolute transition duration-700 ease-in-out px-10 py-6 top-10 rounded-sm right-3 dark:border-red-600 border-red-500 border-r-[10px] dark:bg-slate-800 bg-slate-200 font-bold dark:text-slate-50 text-slate-800">O titulo ou o corpo da mensagem não podem ser vazios!</div>
       }
       else{
         null
       }
+  }
+
+  function timer(){
+    setTimeout(() => {
+      setPopUp(false);
+  }, 5000);
   }
 
   return (
