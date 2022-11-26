@@ -25,7 +25,7 @@ export default function Home({ notes }: Notes) {
     content: "",
     id: "",
   });
-  const [popUp, setPopUp] = useState(false)
+  const [popUp, setPopUp] = useState(false);
   const router = useRouter();
 
   const [darkMode, setDarkMode] = useState(false);
@@ -78,7 +78,7 @@ export default function Home({ notes }: Notes) {
 
   async function create(data: FormData) {
     if (data.content === "" || data.title === "") {
-      setPopUp(true)
+      setPopUp(true);
     } else {
       try {
         fetch("/api/create", {
@@ -126,28 +126,30 @@ export default function Home({ notes }: Notes) {
     }
   };
 
-  function popMessage(){
-      if (popUp){
-        timer()
-        return <div className="fixed lg:absolute transition duration-700 p-2 ease-in-out lg:px-10 lg:py-6 lg:top-10 rounded-b-sm lg:rounded-sm lg:right-3 dark:border-red-600 border-red-500 lg:border-r-[10px] dark:bg-red-600 bg-red-400 lg:dark:bg-slate-800 lg:bg-slate-200 font-bold dark:text-slate-50 text-slate-800">O titulo ou o corpo da mensagem não podem ser vazios!</div>
-      }
-      else{
-        null
-      }
+  function popMessage() {
+    if (popUp) {
+      timer();
+      return (
+        <div className="fixed lg:absolute transition duration-700 p-2 ease-in-out lg:px-10 lg:py-6 lg:top-10 rounded-b-sm lg:rounded-sm lg:right-3 dark:border-red-600 border-red-500 lg:border-r-[10px] dark:bg-red-600 bg-red-400 lg:dark:bg-slate-800 lg:bg-slate-200 font-bold dark:text-slate-50 text-slate-800">
+          O titulo ou o corpo da mensagem não podem ser vazios!
+        </div>
+      );
+    } else {
+      null;
+    }
   }
 
-  function timer(){
+  function timer() {
     setTimeout(() => {
       setPopUp(false);
-  }, 6000);
+    }, 6000);
   }
 
   return (
     <div className={` ${darkMode && "dark"}`}>
       <title>Ventura Notes</title>
       {popMessage()}
-      <div
-        className="transition duration-700 ease-in-out min-h-screen bg-gray-100 dark:bg-slate-900">
+      <div className="transition duration-700 ease-in-out min-h-screen bg-gray-100 dark:bg-slate-900">
         {toggleDarkMode()}
         <h1 className="transition duration-700 ease-in-out text-center dark:text-white font-bold text-2xl">
           Notes
@@ -173,19 +175,31 @@ export default function Home({ notes }: Notes) {
             className="transition duration-700 ease-in-out resize-none h-28 border-2 rounded border-gray-600 p-2 border-gray-500 dark:text-gray-200 dark:bg-slate-800"
           />
 
-          <button type="submit" className="bg-blue-500 hover:bg-blue-600 duration-500 text-white rounded p-1">
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 duration-500 text-white rounded p-1"
+          >
             Add +
           </button>
         </form>
-        
+
         <div className="transition duration-700 ease-in-out w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch dark:text-gray-200">
           <div className="mb-12">
             {notes.map((note) => (
-                <Card note={note} setForm={setForm} deleteNote={deleteNote} />
+              <Card note={note} setForm={setForm} deleteNote={deleteNote} />
             ))}
           </div>
         </div>
       </div>
+      <footer className=" pb-6 w-full dark:bg-slate-900 dark:text-gray-200 flex align-center items-center justify-center">
+        Made by &nbsp;
+        <a
+          href="https://github.com/viniciusventura29" target='_blank'
+          className="dark:hover:text-gray-400 hover:text-gray-800 font-semibold"
+        >
+          Vinicius Ventura
+        </a>
+      </footer>
     </div>
   );
 }
