@@ -20,9 +20,9 @@ export function Modal({ note, setModalComponent }: modalProps) {
             X
           </button>
         </div>
-        <p className="dark:bg-slate-700 bg-gray-100 px-4 py-2 border-2 border-gray-500 rounded h-5/6 lg:mt-10 mt-6 dark:text-gray-100">
+        <textarea readOnly className="resize-none w-full dark:bg-slate-700 bg-gray-100 px-4 py-2 border-2 border-gray-500 rounded h-5/6 lg:mt-10 mt-6 dark:text-gray-100">
           {note.content}
-        </p>
+        </textarea>
       </div>
     </>
   );
