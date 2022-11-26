@@ -191,7 +191,7 @@ export default function Home({ notes }: Notes) {
           </div>
         </div>
       </div>
-      <footer className=" pb-6 w-full dark:bg-slate-900 dark:text-gray-200 flex align-center items-center justify-center">
+      <footer className=" pb-6 w-full bg-gray-100 dark:bg-slate-900 dark:text-gray-200 flex align-center items-center justify-center">
         Made by &nbsp;
         <a
           href="https://github.com/viniciusventura29" target='_blank'
