@@ -1,9 +1,9 @@
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { stringify } from "querystring";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "../components/card";
 import { prisma } from "../lib/prisma";
+import { createClient } from "@supabase/supabase-js";
 
 interface Notes {
   notes: {
@@ -19,7 +19,21 @@ export interface FormData {
   id: string;
 }
 
+const supabase = createClient(
+  "https://gbiwyeipcezllbscycef.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiaXd5ZWlwY2V6bGxic2N5Y2VmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njc0OTgwNDAsImV4cCI6MTk4MzA3NDA0MH0.EVttMx1ecipZMeoq591NNv2C3VweWQXJtyTaiIi4Qlg"
+);
+
 export default function Home({ notes }: Notes) {
+  const Sla = async () => {
+    const { data, error } = await supabase.auth.getSession()
+
+    if (error) {
+      console.log(error);
+    }
+
+    console.log(data);
+  };
   const [form, setForm] = useState<FormData>({
     title: "",
     content: "",
@@ -145,6 +159,10 @@ export default function Home({ notes }: Notes) {
     }, 6000);
   }
 
+  useEffect(()=>{
+    Sla()
+  },[])
+
   return (
     <div className={` ${darkMode && "dark"}`}>
       <title>Ventura Notes</title>
@@ -166,13 +184,13 @@ export default function Home({ notes }: Notes) {
             placeholder="Title"
             value={form.title}
             onChange={(e) => setForm({ ...form, title: e.target.value })}
-            className="transition duration-700 ease-in-out border-2 rounded border-gray-600 p-2 border-gray-500 dark:text-gray-200 dark:bg-slate-800"
+            className="transition duration-700 ease-in-out border-2 rounded border-gray-600 p-2  dark:text-gray-200 dark:bg-slate-800"
           />
           <textarea
             placeholder="Content"
             value={form.content}
             onChange={(e) => setForm({ ...form, content: e.target.value })}
-            className="transition duration-700 ease-in-out resize-none h-28 border-2 rounded border-gray-600 p-2 border-gray-500 dark:text-gray-200 dark:bg-slate-800"
+            className="transition duration-700 ease-in-out resize-none h-28 border-2 rounded border-gray-600 p-2  dark:text-gray-200 dark:bg-slate-800"
           />
 
           <button
@@ -194,7 +212,8 @@ export default function Home({ notes }: Notes) {
       <footer className=" pb-6 w-full bg-gray-100 dark:bg-slate-900 dark:text-gray-200 flex align-center items-center justify-center">
         Made by &nbsp;
         <a
-          href="https://github.com/viniciusventura29" target='_blank'
+          href="https://github.com/viniciusventura29"
+          target="_blank"
           className="dark:hover:text-gray-400 hover:text-gray-800 font-semibold"
         >
           Vinicius Ventura
