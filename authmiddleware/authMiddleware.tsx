@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
-import { getUser } from "./api/notes";
+import { getUser } from "../pages/api/notes"
 import { useRouter } from "next/router";
 import { SessionUser } from "../types";
 

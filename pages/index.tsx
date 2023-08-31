@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "../components/card";
 import { create, deleteNote, getData, signOut, update } from "./api/notes";
 import { Notes, FormData, SessionUser } from "../types";
-import AuthMiddleware from "./authMiddleware";
+import AuthMiddleware from "../authmiddleware/authMiddleware";
 
 export default function Home() {
   const [notes, setNotes] = useState<Notes>();
