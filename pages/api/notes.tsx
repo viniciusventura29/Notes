@@ -1,15 +1,29 @@
 import { createClient } from "@supabase/supabase-js";
-import { Notes, FormData } from "../../types";
+import { Notes, FormData, SessionUser } from "../../types";
 import { Dispatch, SetStateAction } from "react";
-import { NextRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 
 const supabase = createClient(
   "https://osaoeebokyudngypsfhq.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zYW9lZWJva3l1ZG5neXBzZmhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTM0MzQ0NTgsImV4cCI6MjAwOTAxMDQ1OH0.locDhmsV4Syi21cXan2nfNSOImtYVYFR2D3NysOctE4"
 );
 
-const getData = async ({setNotes}:{setNotes: Dispatch<SetStateAction<Notes | undefined>>}) => {
-  let { data, error } = await supabase.from("notes").select("*");
+const getUser = async () => {
+  const user = await supabase.auth.getSession();
+
+  return user;
+};
+
+const getData = async ({
+  setNotes,
+}: {
+  setNotes: Dispatch<SetStateAction<Notes | undefined>>;
+}) => {
+  const user = await getUser();
+  let { data, error } = await supabase
+    .from("notes")
+    .select("*")
+    .eq("user", user.data.session?.user.id);
 
   if (error) {
     console.log(error);
@@ -23,14 +37,19 @@ const getData = async ({setNotes}:{setNotes: Dispatch<SetStateAction<Notes | und
 
   const newNotes = data as unknown as Notes;
 
-  console.log(newNotes);
   setNotes(newNotes);
 };
 
-async function create(note: FormData) {
+async function create(note: FormData, session: SessionUser) {
   const { data, error } = await supabase
     .from("notes")
-    .insert([{ title: note.title, content: note.content }])
+    .insert([
+      {
+        title: note.title,
+        content: note.content,
+        user: session.data.session?.user.id,
+      },
+    ])
     .select();
 
   if (error) {
@@ -39,10 +58,14 @@ async function create(note: FormData) {
   }
 }
 
-async function update(note: FormData) {
+async function update(note: FormData, session: SessionUser) {
   const { data, error } = await supabase
     .from("notes")
-    .update({ title: note.title, content: note.content })
+    .update({
+      title: note.title,
+      content: note.content,
+      user: session.data.session?.user.id,
+    })
     .eq("id", note.id)
     .select();
 
@@ -52,14 +75,24 @@ async function update(note: FormData) {
   }
 }
 
-async function deleteNote(id: string, router:NextRouter) {
+async function deleteNote(id: string, router: NextRouter) {
   const { error } = await supabase.from("notes").delete().eq("id", id);
 
   if (error) {
     console.log(error);
     return;
   }
-  router.reload()
+  router.reload();
 }
 
-export { deleteNote, create, update, getData };
+async function signOut() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.log(error);
+  }
+
+  
+}
+
+export { deleteNote, create, update, getData, getUser, signOut };

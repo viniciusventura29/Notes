@@ -2,8 +2,9 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Card } from "../components/card";
-import { create, deleteNote, getData, update } from "./api/notes";
-import { Notes, FormData } from "../types";
+import { create, deleteNote, getData, signOut, update } from "./api/notes";
+import { Notes, FormData, SessionUser } from "../types";
+import AuthMiddleware from "./authMiddleware";
 
 export default function Home() {
   const [notes, setNotes] = useState<Notes>();
@@ -13,7 +14,6 @@ export default function Home() {
     content: "",
     id: "",
   });
-
   const [popUp, setPopUp] = useState(false);
   const router = useRouter();
 
@@ -85,69 +85,88 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={` ${darkMode && "dark"}`}>
-      <title>Ventura Notes</title>
-      {popMessage()}
-      <div className="transition duration-700 ease-in-out min-h-screen bg-gray-100 dark:bg-slate-900">
-        {toggleDarkMode()}
-        <h1 className="transition duration-700 ease-in-out text-center dark:text-white font-bold text-2xl">
-          Notes
-        </h1>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            isUpdate ? update(form) : create(form);
-          }}
-          className="w-auto mt-6 min-w-[25%] max-w-min mx-auto space-y-6 flex flex-col items-stretch"
-        >
-          <input
-            type="text"
-            placeholder="Title"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
-            className="transition duration-700 ease-in-out border-2 rounded border-gray-600 p-2  dark:text-gray-200 dark:bg-slate-800"
-          />
-          <textarea
-            placeholder="Content"
-            value={form.content}
-            onChange={(e) => setForm({ ...form, content: e.target.value })}
-            className="transition duration-700 ease-in-out resize-none h-28 border-2 rounded border-gray-600 p-2  dark:text-gray-200 dark:bg-slate-800"
-          />
+    <AuthMiddleware>
+      {(session: SessionUser) => (
+        <div className={` ${darkMode && "dark"}`}>
+          <title>Ventura Notes</title>
+          {popMessage()}
+          <div className="transition duration-700 ease-in-out min-h-screen bg-gray-100 dark:bg-slate-900">
+            {toggleDarkMode()}
+            <button
+              className={`absolute right-12 top-10 rounded-md border ${
+                session && session.data.session?.user ? "" : "hidden"
+              } p-2 px-4 bg-slate-50 hover:bg-white`}
+              onClick={() => {
+                signOut();
+                setTimeout(() => {
+                  router.reload();
+                }, 500);
+              }}
+            >
+              Logout
+            </button>
+            <h1 className="transition duration-700 ease-in-out text-center dark:text-white font-bold text-2xl">
+              Notes
+            </h1>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                isUpdate ? update(form, session) : create(form, session);
+              }}
+              className="w-auto mt-6 min-w-[25%] max-w-min mx-auto space-y-6 flex flex-col items-stretch"
+            >
+              <input
+                type="text"
+                placeholder="Title"
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                className="transition duration-700 ease-in-out border-2 rounded border-gray-600 p-2  dark:text-gray-200 dark:bg-slate-800"
+              />
+              <textarea
+                placeholder="Content"
+                value={form.content}
+                onChange={(e) => setForm({ ...form, content: e.target.value })}
+                className="transition duration-700 ease-in-out resize-none h-28 border-2 rounded border-gray-600 p-2  dark:text-gray-200 dark:bg-slate-800"
+              />
 
-          <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 duration-500 text-white rounded p-1"
-            onClick={() => router.reload()}
-          >
-            {isUpdate ? "Update" : "Add +"}
-          </button>
-        </form>
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-600 duration-500 text-white rounded p-1"
+                onClick={() => router.reload()}
+              >
+                {isUpdate ? "Update" : "Add +"}
+              </button>
+            </form>
 
-        <div className="transition duration-700 ease-in-out w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch dark:text-gray-200">
-          <div className="mb-12">
-            {!notes
-              ? null
-              : notes.map((note) => (
-                  <Card
-                    setIsUpdate={setIsUpdate}
-                    note={note}
-                    setForm={setForm}
-                    deleteNote={deleteNote}
-                  />
-                ))}
+            <div className="transition duration-700 ease-in-out w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch dark:text-gray-200">
+              <div className="mb-12">
+                {!notes
+                  ? null
+                  : notes.map((note) => (
+                      <Card
+                        key={note.id}
+                        session={session}
+                        setIsUpdate={setIsUpdate}
+                        note={note}
+                        setForm={setForm}
+                        deleteNote={deleteNote}
+                      />
+                    ))}
+              </div>
+            </div>
           </div>
+          <footer className=" pb-6 w-full bg-gray-100 dark:bg-slate-900 dark:text-gray-200 flex align-center items-center justify-center">
+            Made by &nbsp;
+            <a
+              href="https://github.com/viniciusventura29"
+              target="_blank"
+              className="dark:hover:text-gray-400 hover:text-gray-800 font-semibold"
+            >
+              Vinicius Ventura
+            </a>
+          </footer>
         </div>
-      </div>
-      <footer className=" pb-6 w-full bg-gray-100 dark:bg-slate-900 dark:text-gray-200 flex align-center items-center justify-center">
-        Made by &nbsp;
-        <a
-          href="https://github.com/viniciusventura29"
-          target="_blank"
-          className="dark:hover:text-gray-400 hover:text-gray-800 font-semibold"
-        >
-          Vinicius Ventura
-        </a>
-      </footer>
-    </div>
+      )}
+    </AuthMiddleware>
   );
 }
