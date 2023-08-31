@@ -1,5 +1,12 @@
 import { AuthError, Session } from "@supabase/supabase-js";
 
+export type SingleNote ={
+    id: string;
+    title: string;
+    content: string;
+  
+}
+
 export type Notes = {
   map(arg0: (note: any) => JSX.Element): import("react").ReactNode;
   notes: {

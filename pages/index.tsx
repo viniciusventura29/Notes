@@ -3,12 +3,15 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Card } from "../components/card";
 import { create, deleteNote, getData, signOut, update } from "./api/notes";
-import { Notes, FormData, SessionUser } from "../types";
+import { Notes, FormData, SessionUser, SingleNote } from "../types";
 import AuthMiddleware from "../authmiddleware/authMiddleware";
+import { Modal } from "../components/modal";
 
 export default function Home() {
   const [notes, setNotes] = useState<Notes>();
+  const [singleNote, setSingleNote] = useState<SingleNote>({content:"",title:"",id:""})
   const [isUpdate, setIsUpdate] = useState(false);
+  const [modalComponent, setModalComponent] = useState(false);
   const [form, setForm] = useState<FormData>({
     title: "",
     content: "",
@@ -144,12 +147,14 @@ export default function Home() {
                   ? null
                   : notes.map((note) => (
                       <Card
+                      setSingleNote={setSingleNote}
                         key={note.id}
                         session={session}
                         setIsUpdate={setIsUpdate}
                         note={note}
                         setForm={setForm}
                         deleteNote={deleteNote}
+                        setModalComponent={setModalComponent}
                       />
                     ))}
               </div>
@@ -165,6 +170,7 @@ export default function Home() {
               Vinicius Ventura
             </a>
           </footer>
+          <Modal modalComponent={modalComponent} setModalComponent={setModalComponent} note={singleNote} />
         </div>
       )}
     </AuthMiddleware>
