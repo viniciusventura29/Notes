@@ -2,10 +2,10 @@ import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Card } from "../components/card";
-import { prisma } from "../lib/prisma";
-import { createClient } from "@supabase/supabase-js";
+import { create, deleteNote, getData, update } from "./api/notes";
 
-interface Notes {
+export type Notes={
+  map(arg0: (note: any) => JSX.Element): import("react").ReactNode;
   notes: {
     id: string;
     title: string;
@@ -13,32 +13,21 @@ interface Notes {
   }[];
 }
 
-export interface FormData {
+export type FormData ={
   title: string;
   content: string;
   id: string;
 }
 
-const supabase = createClient(
-  "https://gbiwyeipcezllbscycef.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdiaXd5ZWlwY2V6bGxic2N5Y2VmIiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njc0OTgwNDAsImV4cCI6MTk4MzA3NDA0MH0.EVttMx1ecipZMeoq591NNv2C3VweWQXJtyTaiIi4Qlg"
-);
-
-export default function Home({ notes }: Notes) {
-  const Sla = async () => {
-    const { data, error } = await supabase.auth.getSession()
-
-    if (error) {
-      console.log(error);
-    }
-
-    console.log(data);
-  };
+export default function Home() {
+  const [notes, setNotes] = useState<Notes>();
+  const [isUpdate, setIsUpdate] = useState(false);
   const [form, setForm] = useState<FormData>({
     title: "",
     content: "",
     id: "",
   });
+
   const [popUp, setPopUp] = useState(false);
   const router = useRouter();
 
@@ -86,60 +75,6 @@ export default function Home({ notes }: Notes) {
     }
   };
 
-  const refreshData = () => {
-    router.replace(router.asPath);
-  };
-
-  async function create(data: FormData) {
-    if (data.content === "" || data.title === "") {
-      setPopUp(true);
-    } else {
-      try {
-        fetch("/api/create", {
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-        }).then(() => {
-          if (data.id) {
-            deleteNote(data.id);
-            setForm({ title: "", content: "", id: "" });
-            refreshData();
-          } else {
-            setForm({ title: "", content: "", id: "" });
-            refreshData();
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
-
-  async function deleteNote(id: string) {
-    try {
-      fetch(`/api/note/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "DELETE",
-      }).then(() => {
-        refreshData();
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const handleSubmit = async (data: FormData) => {
-    try {
-      create(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   function popMessage() {
     if (popUp) {
       timer();
@@ -159,9 +94,9 @@ export default function Home({ notes }: Notes) {
     }, 6000);
   }
 
-  useEffect(()=>{
-    Sla()
-  },[])
+  useEffect(() => {
+    getData({setNotes});
+  }, []);
 
   return (
     <div className={` ${darkMode && "dark"}`}>
@@ -175,7 +110,7 @@ export default function Home({ notes }: Notes) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmit(form);
+            isUpdate ? update(form) : create(form);
           }}
           className="w-auto mt-6 min-w-[25%] max-w-min mx-auto space-y-6 flex flex-col items-stretch"
         >
@@ -196,16 +131,24 @@ export default function Home({ notes }: Notes) {
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-600 duration-500 text-white rounded p-1"
+            onClick={()=>router.reload()}
           >
-            Add +
+            {isUpdate?"Update":"Add +"}
           </button>
         </form>
 
         <div className="transition duration-700 ease-in-out w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch dark:text-gray-200">
           <div className="mb-12">
-            {notes.map((note) => (
-              <Card note={note} setForm={setForm} deleteNote={deleteNote} />
-            ))}
+            {!notes
+              ? null
+              : notes.map((note) => (
+                  <Card
+                    setIsUpdate={setIsUpdate}
+                    note={note}
+                    setForm={setForm}
+                    deleteNote={deleteNote}
+                  />
+                ))}
           </div>
         </div>
       </div>
@@ -222,17 +165,3 @@ export default function Home({ notes }: Notes) {
     </div>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const notes = await prisma.note.findMany({
-    select: {
-      title: true,
-      id: true,
-      content: true,
-    },
-  });
-
-  return {
-    props: {notes},
-  };
-};

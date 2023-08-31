@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { FormData } from "../pages";
 import { Modal } from "./modal";
+import { useRouter } from "next/router";
 
 export interface cardProps {
   note: {
@@ -10,11 +11,14 @@ export interface cardProps {
   };
   deleteNote: any;
   setForm: Dispatch<SetStateAction<FormData>>;
+  setIsUpdate:Dispatch<SetStateAction<boolean>>;
 }
 
-export function Card({ note, setForm, deleteNote }: cardProps) {
+export function Card({ note, setForm, deleteNote,setIsUpdate }: cardProps) {
   const [modalComponent, setModalComponent] = useState(false);
   let thereMore = ''
+
+  const router = useRouter()
 
   function verifyLengthContent() {
     if (note.content.length > 63){
@@ -48,19 +52,20 @@ export function Card({ note, setForm, deleteNote }: cardProps) {
             </div>
           </div>
           <button
-            onClick={() =>
+            onClick={() =>{
               setForm({
                 title: note.title,
                 content: note.content,
                 id: note.id,
               })
+              setIsUpdate(true)}
             }
             className="bg-blue-500 hover:bg-blue-600 duration-500 mr-3 px-3 text-white rounded"
           >
             Update
           </button>
           <button
-            onClick={() => deleteNote(note.id)}
+            onClick={() => {deleteNote(note.id),router.reload()}}
             className="bg-red-500 hover:bg-red-600 duration-500 px-3 text-white rounded"
           >
             X
