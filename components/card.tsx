@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { FormData } from "../pages";
 import { Modal } from "./modal";
 import { useRouter } from "next/router";
+import { FormData } from "../types";
 
 export interface cardProps {
   note: {
