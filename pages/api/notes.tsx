@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { Notes, FormData } from "..";
+import { Notes, FormData } from "../../types";
 import { Dispatch, SetStateAction } from "react";
 
 const supabase = createClient(

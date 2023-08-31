@@ -3,21 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Card } from "../components/card";
 import { create, deleteNote, getData, update } from "./api/notes";
-
-export type Notes={
-  map(arg0: (note: any) => JSX.Element): import("react").ReactNode;
-  notes: {
-    id: string;
-    title: string;
-    content: string;
-  }[];
-}
-
-export type FormData ={
-  title: string;
-  content: string;
-  id: string;
-}
+import { Notes, FormData } from "../types";
 
 export default function Home() {
   const [notes, setNotes] = useState<Notes>();
@@ -95,7 +81,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    getData({setNotes});
+    getData({ setNotes });
   }, []);
 
   return (
@@ -131,9 +117,9 @@ export default function Home() {
           <button
             type="submit"
             className="bg-blue-500 hover:bg-blue-600 duration-500 text-white rounded p-1"
-            onClick={()=>router.reload()}
+            onClick={() => router.reload()}
           >
-            {isUpdate?"Update":"Add +"}
+            {isUpdate ? "Update" : "Add +"}
           </button>
         </form>
 
