@@ -65,7 +65,7 @@ export function Card({ note, setForm, deleteNote,setIsUpdate }: cardProps) {
             Update
           </button>
           <button
-            onClick={() => {deleteNote(note.id),router.reload()}}
+            onClick={() => {deleteNote(note.id,router)}}
             className="bg-red-500 hover:bg-red-600 duration-500 px-3 text-white rounded"
           >
             X

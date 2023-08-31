@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { Notes, FormData } from "../../types";
 import { Dispatch, SetStateAction } from "react";
+import { NextRouter } from "next/router";
 
 const supabase = createClient(
   "https://osaoeebokyudngypsfhq.supabase.co",
@@ -51,13 +52,14 @@ async function update(note: FormData) {
   }
 }
 
-async function deleteNote(id: string) {
+async function deleteNote(id: string, router:NextRouter) {
   const { error } = await supabase.from("notes").delete().eq("id", id);
 
   if (error) {
     console.log(error);
     return;
   }
+  router.reload()
 }
 
 export { deleteNote, create, update, getData };
