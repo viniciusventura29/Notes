@@ -1,17 +1,23 @@
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card } from "../components/card";
 import { create, deleteNote, getData, signOut, update } from "./api/notes";
 import { Notes, FormData, SessionUser, SingleNote } from "../types";
 import AuthMiddleware from "../authmiddleware/authMiddleware";
 import { Modal } from "../components/modal";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 export default function Home() {
+  useQuery({queryKey:["getData"], queryFn: () => getData({ setNotes })});
   const [notes, setNotes] = useState<Notes>();
-  const [singleNote, setSingleNote] = useState<SingleNote>({content:"",title:"",id:""})
+  const [singleNote, setSingleNote] = useState<SingleNote>({
+    content: "",
+    title: "",
+    id: "",
+  });
   const [isUpdate, setIsUpdate] = useState(false);
   const [modalComponent, setModalComponent] = useState(false);
+  const queryClient = useQueryClient();
   const [form, setForm] = useState<FormData>({
     title: "",
     content: "",
@@ -82,10 +88,17 @@ export default function Home() {
       setPopUp(false);
     }, 6000);
   }
+ 
+    const createNoteMutation = useMutation(({session}:{session:SessionUser})=>create(form, session), {onSuccess:()=>{
+      queryClient.invalidateQueries({queryKey:["getData"]})}
+    });
 
-  useEffect(() => {
-    getData({ setNotes });
-  }, []);
+    const updateNoteMutation = useMutation(({session}:{session:SessionUser}) => update(form, session), {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["getData"]);
+      },
+    })
+  
 
   return (
     <AuthMiddleware>
@@ -114,7 +127,9 @@ export default function Home() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                isUpdate ? update(form, session) : create(form, session);
+                isUpdate
+                  ? updateNoteMutation.mutate({session})
+                  : createNoteMutation.mutate({session})
               }}
               className="w-auto mt-6 min-w-[25%] max-w-min mx-auto space-y-6 flex flex-col items-stretch"
             >
@@ -135,7 +150,6 @@ export default function Home() {
               <button
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-600 duration-500 text-white rounded p-1"
-                onClick={() => router.reload()}
               >
                 {isUpdate ? "Update" : "Add +"}
               </button>
@@ -147,7 +161,7 @@ export default function Home() {
                   ? null
                   : notes.map((note) => (
                       <Card
-                      setSingleNote={setSingleNote}
+                        setSingleNote={setSingleNote}
                         key={note.id}
                         session={session}
                         setIsUpdate={setIsUpdate}
@@ -170,7 +184,11 @@ export default function Home() {
               Vinicius Ventura
             </a>
           </footer>
-          <Modal modalComponent={modalComponent} setModalComponent={setModalComponent} note={singleNote} />
+          <Modal
+            modalComponent={modalComponent}
+            setModalComponent={setModalComponent}
+            note={singleNote}
+          />
         </div>
       )}
     </AuthMiddleware>

@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Modal } from "./modal";
-import { useRouter } from "next/router";
 import { FormData, SessionUser, SingleNote } from "../types";
+import { useMutation, useQueryClient } from "react-query";
 
 export interface cardProps {
   note: SingleNote;
@@ -22,10 +21,16 @@ export function Card({
   setModalComponent,
   setSingleNote,
 }: cardProps) {
+
+  const queryClient = useQueryClient();
+
   const [contentLength, setContentLength] = useState<Boolean>(false);
   const [titleLength, setTitleLength] = useState<Boolean>(false);
 
-  const router = useRouter();
+  const deleteNoteMutation = useMutation(({id}:{id:string})=>deleteNote(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["getData"]);
+    }})
 
   function verifyLengthContent() {
     if (note.content.length > 25) {
@@ -92,7 +97,7 @@ export function Card({
             </button>
             <button
               onClick={() => {
-                deleteNote(note.id, router);
+                deleteNoteMutation.mutate({id:note.id})
               }}
               className="bg-red-500 hover:bg-red-600 duration-500 px-3 text-white rounded"
             >

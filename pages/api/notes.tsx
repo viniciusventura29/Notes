@@ -3,6 +3,7 @@ import { Notes, FormData, SessionUser } from "../../types";
 import { Dispatch, SetStateAction } from "react";
 import { NextRouter, useRouter } from "next/router";
 
+
 const supabase = createClient(
   "https://osaoeebokyudngypsfhq.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9zYW9lZWJva3l1ZG5neXBzZmhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTM0MzQ0NTgsImV4cCI6MjAwOTAxMDQ1OH0.locDhmsV4Syi21cXan2nfNSOImtYVYFR2D3NysOctE4"
@@ -75,14 +76,13 @@ async function update(note: FormData, session: SessionUser) {
   }
 }
 
-async function deleteNote(id: string, router: NextRouter) {
+async function deleteNote(id: string) {
   const { error } = await supabase.from("notes").delete().eq("id", id);
 
   if (error) {
     console.log(error);
     return;
   }
-  router.reload();
 }
 
 async function signOut() {
