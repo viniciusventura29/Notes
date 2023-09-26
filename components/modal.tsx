@@ -17,9 +17,9 @@ export function Modal({ note, setModalComponent,modalComponent }: modalProps) {
             Close
           </button>
         </div>
-        <p className="break-words focus:outline-none resize-none w-full dark:bg-slate-700 bg-white px-4 py-2 rounded lg:mt-10 mt-6 dark:text-gray-100">
+        <div className="break-words whitespace-pre focus:outline-none resize-none w-full dark:bg-slate-700 bg-white px-4 py-2 rounded lg:mt-10 mt-6 dark:text-gray-100">
         {note.content}
-        </p>
+        </div>
       </div>
     </div>
   );

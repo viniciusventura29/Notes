@@ -77,10 +77,10 @@ export function Card({
               <p className={`font-bold ${titleLength ? "" : "hidden"}`}>...</p>
             </div>
 
-            <div className="flex items-center">
-              <p className="text-sm w-96 overflow-hidden">{note.content}</p>
+            <div className="flex items-center relative">
+              <p className="text-sm w-60 overflow-hidden">{note.content}</p>
               <p
-                className={`flex w-10 lg:w-40 text-xs italic font-semibold lg:ml-5 ${
+                className={`absolute -right-24 w-10 lg:w-40 text-xs mb-5 italic font-semibold lg:ml-5 ${
                   contentLength ? "" : "hidden"
                 }`}
               >
