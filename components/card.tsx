@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FormData, SessionUser, SingleNote } from "../types";
 import { useMutation, useQueryClient } from "react-query";
+import { useAlert } from "./alert";
 
 export interface cardProps {
   note: SingleNote;
@@ -26,10 +27,16 @@ export function Card({
 
   const [contentLength, setContentLength] = useState<Boolean>(false);
   const [titleLength, setTitleLength] = useState<Boolean>(false);
+  const trigger = useAlert();
 
   const deleteNoteMutation = useMutation(({id}:{id:string})=>deleteNote(id), {
     onSuccess: () => {
       queryClient.invalidateQueries(["getData"]);
+      trigger({
+        text:"Your note was successfully deleted",
+        title:"Note Deleted",
+        type:"Success"
+      })
     }})
 
   function verifyLengthContent() {

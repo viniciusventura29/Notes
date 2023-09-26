@@ -6,10 +6,12 @@ import { Notes, FormData, SessionUser, SingleNote } from "../types";
 import AuthMiddleware from "../authmiddleware/authMiddleware";
 import { Modal } from "../components/modal";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useAlert } from "../components/alert";
 
 export default function Home() {
   useQuery({queryKey:["getData"], queryFn: () => getData({ setNotes })});
   const [notes, setNotes] = useState<Notes>();
+  const trigger = useAlert();
   const [singleNote, setSingleNote] = useState<SingleNote>({
     content: "",
     title: "",
@@ -90,12 +92,25 @@ export default function Home() {
   }
  
     const createNoteMutation = useMutation(({session}:{session:SessionUser})=>create(form, session), {onSuccess:()=>{
-      queryClient.invalidateQueries({queryKey:["getData"]})}
+      queryClient.invalidateQueries({queryKey:["getData"]})
+      trigger({
+        text:"Your note was successfully created",
+        title:"Note created",
+        type:"Success"
+      })
+      setForm({content:'', title:'',id:''})
+    }
     });
 
     const updateNoteMutation = useMutation(({session}:{session:SessionUser}) => update(form, session), {
       onSuccess: () => {
         queryClient.invalidateQueries(["getData"]);
+        trigger({
+          text:"Your note was successfully updated",
+          title:"Note updated",
+          type:"Success"
+        })
+        setForm({content:'', title:'',id:''})
       },
     })
   

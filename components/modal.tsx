@@ -1,4 +1,4 @@
-import { Notes, SingleNote } from "../types";
+import { SingleNote } from "../types";
 
 export interface modalProps {
   setModalComponent: any;
@@ -12,7 +12,7 @@ export function Modal({ note, setModalComponent,modalComponent }: modalProps) {
       <div className="w-full fixed top-0 left-0 backdrop-blur-[3px] backdrop-brightness-90 h-full"></div>
       <div className="divide-solid divide-y dark:divide-slate-900 shadow-2xl bg-gray-50 dark:bg-slate-800 h-96 px-8 py-6 z-10 rounded-lg w-[50rem]">
         <div className="flex justify-between font-bold text-2xl break-words">
-          <h1 style={{overflowWrap:"anywhere"}}>{note?.title}</h1>
+          <h1 className="dark:text-white" style={{overflowWrap:"anywhere"}}>{note?.title}</h1>
           <button onClick={() => setModalComponent(false)} className="px-3 h-8 bg-red-500 hover:bg-red-600 duration-500 rounded text-sm text-gray-50 font-normal">
             Close
           </button>
