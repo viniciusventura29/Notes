@@ -16,7 +16,7 @@ const AuthMiddleware = ({
     getUser().then((r) => {
       setSession(r);
       if (!r?.data.session?.user) {
-        route.push("/auth");
+        route.push("/login");
       }
     });
   }, []);
