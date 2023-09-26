@@ -124,7 +124,7 @@ export default function Home() {
           <div className="transition duration-700 ease-in-out min-h-screen bg-gray-100 dark:bg-slate-900">
             {toggleDarkMode()}
             <button
-              className={`absolute right-12 top-10 dark:bg-slate-800 rounded-md dark:border-slate-700 dark:text-white dark:hover:bg-slate-700 border ${
+              className={`absolute right-12 top-10 transition duration-700 ease-in-out dark:bg-slate-800 rounded-md dark:border-slate-700 dark:text-white dark:hover:bg-slate-700 border ${
                 session && session.data.session?.user ? "" : "hidden"
               } p-2 px-4 bg-slate-100 hover:bg-white`}
               onClick={() => {
