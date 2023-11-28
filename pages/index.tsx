@@ -1,15 +1,16 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Card } from "../components/card";
+import { Card } from "../components/Card";
 import { create, deleteNote, getData, signOut, update } from "./api/notes";
 import { Notes, FormData, SessionUser, SingleNote } from "../types";
 import AuthMiddleware from "../authmiddleware/authMiddleware";
-import { Modal } from "../components/modal";
+import { ContentModal } from "../components/ContentModal";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useAlert } from "../components/alert";
+import { useAlert } from "../components/Alert";
+import { UploadModal } from "../components/UploadModal";
 
 export default function Home() {
-  useQuery({queryKey:["getData"], queryFn: () => getData({ setNotes })});
+  useQuery({ queryKey: ["getData"], queryFn: () => getData({ setNotes }) });
   const [notes, setNotes] = useState<Notes>();
   const trigger = useAlert();
   const [singleNote, setSingleNote] = useState<SingleNote>({
@@ -18,7 +19,8 @@ export default function Home() {
     id: "",
   });
   const [isUpdate, setIsUpdate] = useState(false);
-  const [modalComponent, setModalComponent] = useState(false);
+  const [contentModalIsOpen, setContentModalIsOpen] = useState(false);
+  const [uploadModalIsOpen, setUploadModalIsOpen] = useState(false);
   const queryClient = useQueryClient();
   const [form, setForm] = useState<FormData>({
     title: "",
@@ -90,30 +92,36 @@ export default function Home() {
       setPopUp(false);
     }, 6000);
   }
- 
-    const createNoteMutation = useMutation(({session}:{session:SessionUser})=>create(form, session), {onSuccess:()=>{
-      queryClient.invalidateQueries({queryKey:["getData"]})
-      trigger({
-        text:"Your note was successfully created",
-        title:"Note created",
-        type:"Success"
-      })
-      setForm({content:'', title:'',id:''})
-    }
-    });
 
-    const updateNoteMutation = useMutation(({session}:{session:SessionUser}) => update(form, session), {
+  const createNoteMutation = useMutation(
+    ({ session }: { session: SessionUser }) => create(form, session),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["getData"] });
+        trigger({
+          text: "Your note was successfully created",
+          title: "Note created",
+          type: "Success",
+        });
+        setForm({ content: "", title: "", id: "" });
+      },
+    }
+  );
+
+  const updateNoteMutation = useMutation(
+    ({ session }: { session: SessionUser }) => update(form, session),
+    {
       onSuccess: () => {
         queryClient.invalidateQueries(["getData"]);
         trigger({
-          text:"Your note was successfully updated",
-          title:"Note updated",
-          type:"Success"
-        })
-        setForm({content:'', title:'',id:''})
+          text: "Your note was successfully updated",
+          title: "Note updated",
+          type: "Success",
+        });
+        setForm({ content: "", title: "", id: "" });
       },
-    })
-  
+    }
+  );
 
   return (
     <AuthMiddleware>
@@ -143,8 +151,8 @@ export default function Home() {
               onSubmit={(e) => {
                 e.preventDefault();
                 isUpdate
-                  ? updateNoteMutation.mutate({session})
-                  : createNoteMutation.mutate({session})
+                  ? updateNoteMutation.mutate({ session })
+                  : createNoteMutation.mutate({ session });
               }}
               className="w-auto mt-6 min-w-[25%] max-w-min mx-auto space-y-6 flex flex-col items-stretch"
             >
@@ -162,12 +170,37 @@ export default function Home() {
                 className="transition duration-700 ease-in-out resize-none h-28 border-2 rounded border-gray-600 p-2  dark:text-gray-200 dark:bg-slate-800"
               />
 
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-600 duration-500 text-white rounded p-1"
-              >
-                {isUpdate ? "Update" : "Add +"}
-              </button>
+              <div className="flex gap-2 w-full">
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-600 duration-500 text-white rounded p-2 w-3/4"
+                >
+                  {isUpdate ? "Update" : "Add +"}
+                </button>
+                <button
+                  onClick={()=>setUploadModalIsOpen(true)}
+                  className="flex justify-center gap-2 items-center bg-sky-600 hover:bg-sky-700 duration-500 text-white rounded p-2 w-1/4"
+                >
+                  Upload
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="icon icon-tabler icon-tabler-upload"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
+                    <path d="M7 9l5 -5l5 5" />
+                    <path d="M12 4l0 12" />
+                  </svg>
+                </button>
+              </div>
             </form>
 
             <div className="transition duration-700 ease-in-out w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch dark:text-gray-200">
@@ -183,7 +216,7 @@ export default function Home() {
                         note={note}
                         setForm={setForm}
                         deleteNote={deleteNote}
-                        setModalComponent={setModalComponent}
+                        setModalComponent={setContentModalIsOpen}
                       />
                     ))}
               </div>
@@ -199,11 +232,12 @@ export default function Home() {
               Vinicius Ventura
             </a>
           </footer>
-          <Modal
-            modalComponent={modalComponent}
-            setModalComponent={setModalComponent}
+          <ContentModal
+            modalComponent={contentModalIsOpen}
+            setModalComponent={setContentModalIsOpen}
             note={singleNote}
           />
+          <UploadModal setModalComponent={setUploadModalIsOpen} modalComponent={uploadModalIsOpen}  />
         </div>
       )}
     </AuthMiddleware>
