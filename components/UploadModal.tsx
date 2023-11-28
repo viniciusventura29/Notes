@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../pages/login";
-import { useAlert } from "./Alert";
+import { useAlert } from "./alert";
 
 export interface modalProps {
   setModalComponent: any;
