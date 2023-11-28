@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FormData, SessionUser, SingleNote } from "../types";
 import { useMutation, useQueryClient } from "react-query";
-import { useAlert } from "./alert";
+import { useAlert } from "./Alert";
 
 export interface cardProps {
   note: SingleNote;
@@ -22,22 +22,25 @@ export function Card({
   setModalComponent,
   setSingleNote,
 }: cardProps) {
-
   const queryClient = useQueryClient();
 
   const [contentLength, setContentLength] = useState<Boolean>(false);
   const [titleLength, setTitleLength] = useState<Boolean>(false);
   const trigger = useAlert();
 
-  const deleteNoteMutation = useMutation(({id}:{id:string})=>deleteNote(id), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["getData"]);
-      trigger({
-        text:"Your note was successfully deleted",
-        title:"Note Deleted",
-        type:"Success"
-      })
-    }})
+  const deleteNoteMutation = useMutation(
+    ({ id }: { id: string }) => deleteNote(id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["getData"]);
+        trigger({
+          text: "Your note was successfully deleted",
+          title: "Note Deleted",
+          type: "Success",
+        });
+      },
+    }
+  );
 
   function verifyLengthContent() {
     if (note.content.length > 25) {
@@ -63,13 +66,13 @@ export function Card({
 
   return (
     <>
-      <div
-        key={note.id}
-        className="border-b border-gray-600 p-2 w-[30rem]"
-      >
+      <div key={note.id} className="border-b border-gray-600 p-2 w-[30rem]">
         <div className="cursor-pointer flex justify-between">
           <div
-            onClick={(e) => {callModal(); e.preventDefault()}}
+            onClick={(e) => {
+              callModal();
+              e.preventDefault();
+            }}
             className="w-80 h-12 overflow-hidden"
           >
             <div className="flex items-center w-full">
@@ -88,7 +91,7 @@ export function Card({
               </p>
             </div>
           </div>
-          <div className="flex">
+          <div className="flex items-center justify-center">
             <button
               onClick={() => {
                 setForm({
@@ -98,17 +101,48 @@ export function Card({
                 });
                 setIsUpdate(true);
               }}
-              className="bg-blue-500 hover:bg-blue-600 duration-500 mr-3 px-3 text-white rounded"
+              className="bg-blue-500 hover:bg-blue-600 duration-500 mr-3 p-2 text-white rounded"
             >
-              Update
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-edit"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                <path d="M16 5l3 3" />
+              </svg>
             </button>
             <button
               onClick={() => {
-                deleteNoteMutation.mutate({id:note.id})
+                deleteNoteMutation.mutate({ id: note.id });
               }}
-              className="bg-red-500 hover:bg-red-600 duration-500 px-3 text-white rounded"
+              className="bg-red-500 hover:bg-red-600 duration-500 p-2 text-white rounded"
             >
-              X
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-x"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M18 6l-12 12" />
+                <path d="M6 6l12 12" />
+              </svg>
             </button>
           </div>
         </div>
