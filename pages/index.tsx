@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Card } from "../components/Card";
+import { Card } from "../components/card";
 import { create, deleteNote, getData, signOut, update } from "./api/notes";
 import { Notes, FormData, SessionUser, SingleNote } from "../types";
 import AuthMiddleware from "../authmiddleware/authMiddleware";
 import { ContentModal } from "../components/ContentModal";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useAlert } from "../components/Alert";
+import { useAlert } from "../components/alert";
 import { UploadModal } from "../components/UploadModal";
 
 export default function Home() {

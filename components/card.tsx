@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { FormData, SessionUser, SingleNote } from "../types";
 import { useMutation, useQueryClient } from "react-query";
-import { useAlert } from "./Alert";
+import { useAlert } from "./alert";
 
 export interface cardProps {
   note: SingleNote;
