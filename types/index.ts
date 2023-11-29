@@ -7,6 +7,16 @@ export type SingleNote ={
   
 }
 
+export type FileObject={
+  created_at:string;
+  id: string;
+  last_accessed_at: string;
+  metadata: any;
+  name: string;
+  updated_at: string
+}
+
+
 export type Notes = {
   map(arg0: (note: any) => JSX.Element): import("react").ReactNode;
   notes: {

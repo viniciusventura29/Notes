@@ -1,17 +1,20 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { Card } from "../components/Card";
-import { create, deleteNote, getData, signOut, update } from "./api/notes";
-import { Notes, FormData, SessionUser, SingleNote } from "../types";
+import { create, deleteNote, getData, getFiles, signOut, update } from "./api/notes";
+import { Notes, FormData, SessionUser, SingleNote, FileObject } from "../types";
 import AuthMiddleware from "../authmiddleware/authMiddleware";
 import { ContentModal } from "../components/ContentModal";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useAlert } from "../components/Alert";
 import { UploadModal } from "../components/UploadModal";
+import { FilesView } from "../components/FilesView";
 
 export default function Home() {
   useQuery({ queryKey: ["getData"], queryFn: () => getData({ setNotes }) });
+  useQuery({ queryKey: ["getFiles"], queryFn: () => getFiles({ setFiles }) })
   const [notes, setNotes] = useState<Notes>();
+  const [files, setFiles] = useState<FileObject[]>();
   const trigger = useAlert();
   const [singleNote, setSingleNote] = useState<SingleNote>({
     content: "",
@@ -21,6 +24,7 @@ export default function Home() {
   const [isUpdate, setIsUpdate] = useState(false);
   const [contentModalIsOpen, setContentModalIsOpen] = useState(false);
   const [uploadModalIsOpen, setUploadModalIsOpen] = useState(false);
+  const [filesViewIsOpen, setFilesViewIsOpen] = useState(false);
   const queryClient = useQueryClient();
   const [form, setForm] = useState<FormData>({
     title: "",
@@ -237,6 +241,7 @@ export default function Home() {
             setModalComponent={setContentModalIsOpen}
             note={singleNote}
           />
+          <FilesView files={files} setModalComponent={setFilesViewIsOpen} modalComponent={filesViewIsOpen} />
           <UploadModal setModalComponent={setUploadModalIsOpen} modalComponent={uploadModalIsOpen}  />
         </div>
       )}

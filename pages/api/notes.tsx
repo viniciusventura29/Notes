@@ -1,8 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
-import { Notes, FormData, SessionUser } from "../../types";
+import { Notes, FormData, SessionUser, FileObject } from "../../types";
 import { Dispatch, SetStateAction } from "react";
 import { NextRouter, useRouter } from "next/router";
-
 
 const supabase = createClient(
   "https://osaoeebokyudngypsfhq.supabase.co",
@@ -91,8 +90,18 @@ async function signOut() {
   if (error) {
     console.log(error);
   }
-
-  
 }
 
-export { deleteNote, create, update, getData, getUser, signOut };
+async function getFiles({
+  setFiles,
+}: {
+  setFiles: Dispatch<SetStateAction<FileObject[] | undefined>>;
+}) {
+  const { data, error } = await supabase.storage.from("files").list();
+
+  if (data) {
+    setFiles(data);
+  }
+}
+
+export { deleteNote, create, update, getData, getUser, signOut, getFiles };
