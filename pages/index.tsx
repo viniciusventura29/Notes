@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import { SetStateAction, useState } from "react";
-import { Card } from "../components/Card";
+import { Card } from "../components/Item";
 import { create, deleteNote, getData, getFiles, signOut, update } from "./api/notes";
 import { Notes, FormData, SessionUser, SingleNote, FileObject } from "../types";
 import AuthMiddleware from "../authmiddleware/authMiddleware";
 import { ContentModal } from "../components/ContentModal";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useAlert } from "../components/Alert";
+import { useAlert } from "../components/Toast";
 import { UploadModal } from "../components/UploadModal";
 import { FilesView } from "../components/FilesView";
 
