@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { FileObject } from "../types";
-import { supabase } from "../pages/login";
+import supabase from "../pages/api/supabaseClient";
 
 export interface modalProps {
   setModalComponent: Dispatch<SetStateAction<boolean>>;
@@ -13,11 +13,22 @@ export function FilesView({
   modalComponent,
   files,
 }: modalProps) {
+
   const download = async (fileName: string) => {
-    console.log("sad")
-    const { data, error } = await supabase.storage
+    const { data } = await supabase.storage
       .from("files")
       .download(fileName);
+
+    if (!data) return;
+    
+    const url = URL.createObjectURL(data)
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -25,7 +36,6 @@ export function FilesView({
       <button
         onClick={() => {
           setModalComponent(!modalComponent);
-          console.log(files);
         }}
         className="rounded-full bg-blue-500 transition-colors duration-200 hover:bg-blue-600 shadow border dark:border-slate-800 flex justify-center items-center p-4 text-blue-100 w-16 h-16"
       >
@@ -48,17 +58,18 @@ export function FilesView({
         </svg>
       </button>
       <div
-        className={`rounded-md rounded-br-none border shadow bg-slate-100 w-72 h-[32rem] ${
+        className={`rounded-md rounded-br-none border dark:border-gray-600 shadow dark:bg-slate-800 bg-slate-100 w-72 h-[32rem] ${
           modalComponent ? "" : "hidden"
         }`}
       >
-        <h3 className="flex text-xl justify-center p-4 font-semibold">
+        <h3 className="flex dark:text-white text-xl justify-center p-4 font-semibold">
           Your Files
         </h3>
         {files?.map((file, index) => (
           <div
+          key={index}
           onClick={()=>download(file.name)}
-            className={`flex justify-between px-4 py-2 border-b border-gray-400 hover:text-blue-700 text-blue-500 cursor-pointer ${
+            className={`flex justify-between px-4 py-2 border-b border-gray-400 dark:border-gray-700 hover:text-blue-700 text-blue-500 cursor-pointer ${
               index === 0 ? "border-t" : ""
             }`}
           >
