@@ -3,7 +3,7 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useAlert } from "../components/Toast";
+import { useAlert } from "../components/Alert";
 
 export const supabase = createClient(
   "https://osaoeebokyudngypsfhq.supabase.co",

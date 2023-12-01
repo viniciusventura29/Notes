@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { supabase } from "./login";
-import { useAlert } from "../components/Toast";
+import { useAlert } from "../components/Alert";
 
 const Login = () => {
   const router = useRouter();
