@@ -182,7 +182,7 @@ export default function Home() {
                   {isUpdate ? "Update" : "Add +"}
                 </button>
                 <button
-                  onClick={()=>setUploadModalIsOpen(true)}
+                  onClick={(e)=>{setUploadModalIsOpen(true);e.preventDefault()}}
                   className="flex justify-center gap-2 items-center bg-sky-600 hover:bg-sky-700 duration-500 text-white rounded p-2 w-1/4"
                 >
                   Upload

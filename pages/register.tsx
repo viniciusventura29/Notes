@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { supabase } from "./login";
 import { useAlert } from "../components/Alert";
+import supabase from "./api/supabaseClient";
 
 const Login = () => {
   const router = useRouter();
@@ -39,7 +39,6 @@ const Login = () => {
             setShowMessage(false)
         }, 15000);
       });
-    console.log("oi");
   };
 
   return (
