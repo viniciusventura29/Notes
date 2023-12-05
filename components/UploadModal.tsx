@@ -14,7 +14,7 @@ export function UploadModal({ setModalComponent, modalComponent }: modalProps) {
   async function uploadFile(file: File | null | undefined) {
     if (file) {
       const { data, error } = await supabase.storage
-        .from("files")
+        .from("userFile")
         .upload(file.name, file);
       if (error) {
         trigger({

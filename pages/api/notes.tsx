@@ -92,7 +92,7 @@ async function getFiles({
 }: {
   setFiles: Dispatch<SetStateAction<FileObject[] | undefined>>;
 }) {
-  const { data, error } = await supabase.storage.from("files").list();
+  const { data, error } = await supabase.storage.from("userFile").list();
 
   if (data) {
     setFiles(data);
