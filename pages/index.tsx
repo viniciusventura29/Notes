@@ -1,7 +1,14 @@
 import { useRouter } from "next/router";
 import { SetStateAction, useState } from "react";
 import { Card } from "../components/Card";
-import { create, deleteNote, getData, getFiles, signOut, update } from "./api/notes";
+import {
+  create,
+  deleteNote,
+  getData,
+  getFiles,
+  signOut,
+  update,
+} from "./api/notes";
 import { Notes, FormData, SessionUser, SingleNote, FileObject } from "../types";
 import AuthMiddleware from "../authmiddleware/authMiddleware";
 import { ContentModal } from "../components/ContentModal";
@@ -12,7 +19,7 @@ import { FilesView } from "../components/FilesView";
 
 export default function Home() {
   useQuery({ queryKey: ["getData"], queryFn: () => getData({ setNotes }) });
-  useQuery({ queryKey: ["getFiles"], queryFn: () => getFiles({ setFiles }) })
+  useQuery({ queryKey: ["getFiles"], queryFn: () => getFiles({ setFiles }) });
   const [notes, setNotes] = useState<Notes>();
   const [files, setFiles] = useState<FileObject[]>();
   const trigger = useAlert();
@@ -182,7 +189,10 @@ export default function Home() {
                   {isUpdate ? "Update" : "Add +"}
                 </button>
                 <button
-                  onClick={(e)=>{setUploadModalIsOpen(true);e.preventDefault()}}
+                  onClick={(e) => {
+                    setUploadModalIsOpen(true);
+                    e.preventDefault();
+                  }}
                   className="flex justify-center gap-2 items-center bg-sky-600 hover:bg-sky-700 duration-500 text-white rounded p-2 w-1/4"
                 >
                   Upload
@@ -241,8 +251,17 @@ export default function Home() {
             setModalComponent={setContentModalIsOpen}
             note={singleNote}
           />
-          <FilesView files={files} setModalComponent={setFilesViewIsOpen} modalComponent={filesViewIsOpen} />
-          <UploadModal user={session.data.session?.user} setModalComponent={setUploadModalIsOpen} modalComponent={uploadModalIsOpen}  />
+          <FilesView
+            user={session ? session.data.session?.user : undefined}
+            files={files}
+            setModalComponent={setFilesViewIsOpen}
+            modalComponent={filesViewIsOpen}
+          />
+          <UploadModal
+            user={session ? session.data.session?.user : undefined}
+            setModalComponent={setUploadModalIsOpen}
+            modalComponent={uploadModalIsOpen}
+          />
         </div>
       )}
     </AuthMiddleware>

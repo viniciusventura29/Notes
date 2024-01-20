@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useAlert } from "./Alert";
 import supabase from "../pages/api/supabaseClient";
 import { User } from "@supabase/supabase-js";
+import { uploadFilesApi } from "../pages/api/notes";
+import { useQueryClient } from "react-query";
 
 export interface modalProps {
   setModalComponent: any;
@@ -16,12 +18,11 @@ export function UploadModal({
 }: modalProps) {
   const trigger = useAlert();
   const [file, setFile] = useState<FileList | null>();
+  const queryClient = useQueryClient()
 
   async function uploadFile(file: File | null | undefined) {
     if (file) {
-      const { data, error } = await supabase.storage
-        .from("files")
-        .upload(user?.id + "/" + file.name, file);
+      const { error } = await uploadFilesApi({ file, user });
       if (error) {
         trigger({
           text: "Ocorreu um erro no upload do seu arquivo! Verifique se está tudo correto.",
@@ -35,6 +36,7 @@ export function UploadModal({
           type: "Success",
         });
         setModalComponent(false);
+        queryClient.invalidateQueries(["getFiles"]);
       }
     }
   }

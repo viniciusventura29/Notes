@@ -1,7 +1,7 @@
 import { Notes, FormData, SessionUser, FileObject } from "../../types";
 import { Dispatch, SetStateAction } from "react";
 import supabase from "./supabaseClient";
-
+import { User } from "@supabase/supabase-js";
 
 const getUser = async () => {
   const user = await supabase.auth.getSession();
@@ -92,12 +92,37 @@ async function getFiles({
 }: {
   setFiles: Dispatch<SetStateAction<FileObject[] | undefined>>;
 }) {
-  const user = await getUser()
-  const { data, error } = await supabase.storage.from("files").list(user.data.session?.user.id + "/");
+  const user = await getUser();
+  const { data, error } = await supabase.storage
+    .from("files")
+    .list(user.data.session?.user.id + "/");
 
   if (data) {
     setFiles(data);
   }
 }
 
-export { deleteNote, create, update, getData, getUser, signOut, getFiles };
+async function uploadFilesApi({
+  user,
+  file,
+}: {
+  user: User | undefined;
+  file: File;
+}) {
+  const { data, error } = await supabase.storage
+    .from("files")
+    .upload(user?.id + "/" + file.name, file);
+
+  return { data, error };
+}
+
+export {
+  deleteNote,
+  create,
+  update,
+  getData,
+  getUser,
+  signOut,
+  getFiles,
+  uploadFilesApi,
+};
