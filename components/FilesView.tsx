@@ -58,7 +58,7 @@ export function FilesView({
         </svg>
       </button>
       <div
-        className={`rounded-md rounded-br-none border dark:border-gray-600 shadow dark:bg-slate-800 bg-slate-100 w-72 h-[32rem] ${
+        className={`rounded-md rounded-br-none border dark:border-gray-600 shadow dark:bg-slate-800 bg-slate-100 w-72 h-[32rem] overflow-y-scroll ${
           modalComponent ? "" : "hidden"
         }`}
       >
