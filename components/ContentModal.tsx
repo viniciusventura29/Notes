@@ -47,7 +47,7 @@ export function ContentModal({ note, setModalComponent, modalComponent }: modalP
             </svg>
           </button>
         </div>
-        <div className="break-words whitespace-pre-line focus:outline-none w-full dark:bg-slate-700 bg-white px-4 py-2 rounded lg:mt-10 mt-6 dark:text-gray-100">
+        <div className="break-words whitespace-pre-line focus:outline-none w-full dark:bg-slate-700 bg-white px-4 py-2 rounded lg:mt-10 mt-6 dark:text-gray-100 max-h-[30rem] overflow-y-scroll">
           {note.content}
         </div>
       </div>
