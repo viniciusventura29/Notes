@@ -242,7 +242,7 @@ export default function Home() {
             note={singleNote}
           />
           <FilesView files={files} setModalComponent={setFilesViewIsOpen} modalComponent={filesViewIsOpen} />
-          <UploadModal setModalComponent={setUploadModalIsOpen} modalComponent={uploadModalIsOpen}  />
+          <UploadModal user={session.data.session?.user} setModalComponent={setUploadModalIsOpen} modalComponent={uploadModalIsOpen}  />
         </div>
       )}
     </AuthMiddleware>

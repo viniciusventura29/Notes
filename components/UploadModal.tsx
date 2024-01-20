@@ -1,21 +1,27 @@
 import { useState } from "react";
 import { useAlert } from "./Alert";
 import supabase from "../pages/api/supabaseClient";
+import { User } from "@supabase/supabase-js";
 
 export interface modalProps {
   setModalComponent: any;
   modalComponent: boolean;
+  user: User | undefined;
 }
 
-export function UploadModal({ setModalComponent, modalComponent }: modalProps) {
+export function UploadModal({
+  user,
+  setModalComponent,
+  modalComponent,
+}: modalProps) {
   const trigger = useAlert();
   const [file, setFile] = useState<FileList | null>();
 
   async function uploadFile(file: File | null | undefined) {
     if (file) {
       const { data, error } = await supabase.storage
-        .from("userFile")
-        .upload(file.name, file);
+        .from("files")
+        .upload(user?.id + "/" + file.name, file);
       if (error) {
         trigger({
           text: "Ocorreu um erro no upload do seu arquivo! Verifique se está tudo correto.",
@@ -28,7 +34,7 @@ export function UploadModal({ setModalComponent, modalComponent }: modalProps) {
           title: "Sucesso ao enviar o arquivo",
           type: "Success",
         });
-        setModalComponent(false)
+        setModalComponent(false);
       }
     }
   }
