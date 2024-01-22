@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { FormData, SessionUser, SingleNote } from "../types";
+import { FormData, SingleNote } from "../types";
 import { useMutation, useQueryClient } from "react-query";
 import { useAlert } from "./Alert";
 
@@ -8,6 +8,7 @@ export interface cardProps {
   deleteNote: any;
   setForm: Dispatch<SetStateAction<FormData>>;
   setModalComponent: Dispatch<SetStateAction<boolean>>;
+  setUpdateModalIsOpen: Dispatch<SetStateAction<boolean>>;
   setSingleNote: Dispatch<SetStateAction<SingleNote>>;
 }
 
@@ -17,6 +18,7 @@ export function Card({
   deleteNote,
   setModalComponent,
   setSingleNote,
+  setUpdateModalIsOpen,
 }: cardProps) {
   const queryClient = useQueryClient();
 
@@ -64,7 +66,7 @@ export function Card({
     <>
       <div
         key={note.id}
-        className="cursor-pointer shadow flex justify-center rounded bg-slate-200 dark:bg-slate-800 p-4 px-6 h-32 w-full group"
+        className="cursor-pointer shadow flex justify-center rounded bg-slate-200 hover:bg-slate-300 hover:dark:bg-slate-700 dark:bg-slate-800 p-4 px-6 h-32 w-full group"
       >
         <div className="flex items-center justify-between w-full">
           <div
@@ -91,6 +93,7 @@ export function Card({
                   content: note.content,
                   id: note.id,
                 });
+                setUpdateModalIsOpen(true);
               }}
               className="bg-blue-500 hover:bg-blue-600 mr-3 p-2 text-white rounded invisible group-hover:visible"
             >

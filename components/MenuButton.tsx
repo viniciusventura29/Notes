@@ -96,9 +96,8 @@ export function MenuButton({
             <path d="M19 16v6" />
           </svg>
         </button>
-        <button >
         <FilesView files={files} modalComponent={filesViewIsOpen} setModalComponent={setFilesViewIsOpen} user={user} />
-        </button>
+      
         
       </div>
     </div>
