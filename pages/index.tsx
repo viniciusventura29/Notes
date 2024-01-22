@@ -12,27 +12,27 @@ import {
 import { Notes, FormData, SessionUser, SingleNote, FileObject } from "../types";
 import AuthMiddleware from "../authmiddleware/authMiddleware";
 import { ContentModal } from "../components/ContentModal";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useAlert } from "../components/Alert";
+import { useQuery } from "react-query";
 import { UploadModal } from "../components/UploadModal";
 import { FilesView } from "../components/FilesView";
+import { MenuButton } from "../components/MenuButton";
+import { NewNoteModal } from "../components/NewNoteModal";
 
 export default function Home() {
   useQuery({ queryKey: ["getData"], queryFn: () => getData({ setNotes }) });
   useQuery({ queryKey: ["getFiles"], queryFn: () => getFiles({ setFiles }) });
   const [notes, setNotes] = useState<Notes>();
   const [files, setFiles] = useState<FileObject[]>();
-  const trigger = useAlert();
+  const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
   const [singleNote, setSingleNote] = useState<SingleNote>({
     content: "",
     title: "",
     id: "",
   });
-  const [isUpdate, setIsUpdate] = useState(false);
   const [contentModalIsOpen, setContentModalIsOpen] = useState(false);
   const [uploadModalIsOpen, setUploadModalIsOpen] = useState(false);
   const [filesViewIsOpen, setFilesViewIsOpen] = useState(false);
-  const queryClient = useQueryClient();
+  const [newNoteModalIsOpen, setNewNoteModalIsOpen] = useState(false);
   const [form, setForm] = useState<FormData>({
     title: "",
     content: "",
@@ -104,35 +104,20 @@ export default function Home() {
     }, 6000);
   }
 
-  const createNoteMutation = useMutation(
-    ({ session }: { session: SessionUser }) => create(form, session),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["getData"] });
-        trigger({
-          text: "Your note was successfully created",
-          title: "Note created",
-          type: "Success",
-        });
-        setForm({ content: "", title: "", id: "" });
-      },
-    }
-  );
-
-  const updateNoteMutation = useMutation(
-    ({ session }: { session: SessionUser }) => update(form, session),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["getData"]);
-        trigger({
-          text: "Your note was successfully updated",
-          title: "Note updated",
-          type: "Success",
-        });
-        setForm({ content: "", title: "", id: "" });
-      },
-    }
-  );
+  // const updateNoteMutation = useMutation(
+  //   ({ session }: { session: SessionUser }) => update(form, session),
+  //   {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries(["getData"]);
+  //       trigger({
+  //         text: "Your note was successfully updated",
+  //         title: "Note updated",
+  //         type: "Success",
+  //       });
+  //       setForm({ content: "", title: "", id: "" });
+  //     },
+  //   }
+  // );
 
   return (
     <AuthMiddleware>
@@ -158,82 +143,20 @@ export default function Home() {
             <h1 className="transition duration-700 ease-in-out text-center dark:text-white font-bold text-2xl">
               Notes
             </h1>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                isUpdate
-                  ? updateNoteMutation.mutate({ session })
-                  : createNoteMutation.mutate({ session });
-              }}
-              className="w-auto mt-6 min-w-[25%] max-w-min mx-auto space-y-6 flex flex-col items-stretch"
-            >
-              <input
-                type="text"
-                placeholder="Title"
-                value={form.title}
-                onChange={(e) => setForm({ ...form, title: e.target.value })}
-                className="transition duration-700 ease-in-out border-2 rounded border-gray-600 p-2  dark:text-gray-200 dark:bg-slate-800"
-              />
-              <textarea
-                placeholder="Content"
-                value={form.content}
-                onChange={(e) => setForm({ ...form, content: e.target.value })}
-                className="transition duration-700 ease-in-out resize-none h-28 border-2 rounded border-gray-600 p-2  dark:text-gray-200 dark:bg-slate-800"
-              />
 
-              <div className="flex gap-2 w-full">
-                <button
-                  type="submit"
-                  className="bg-blue-500 hover:bg-blue-600 duration-500 text-white rounded p-2 w-3/4"
-                >
-                  {isUpdate ? "Update" : "Add +"}
-                </button>
-                <button
-                  onClick={(e) => {
-                    setUploadModalIsOpen(true);
-                    e.preventDefault();
-                  }}
-                  className="flex justify-center gap-2 items-center bg-sky-600 hover:bg-sky-700 duration-500 text-white rounded p-2 w-1/4"
-                >
-                  Upload
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="icon icon-tabler icon-tabler-upload"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2"
-                    stroke="currentColor"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-                    <path d="M7 9l5 -5l5 5" />
-                    <path d="M12 4l0 12" />
-                  </svg>
-                </button>
-              </div>
-            </form>
-
-            <div className="transition duration-700 ease-in-out w-auto min-w-[25%] max-w-min mt-20 mx-auto space-y-6 flex flex-col items-stretch dark:text-gray-200">
-              <div className="mb-12">
-                {!notes
-                  ? null
-                  : notes.map((note) => (
-                      <Card
-                        setSingleNote={setSingleNote}
-                        key={note.id}
-                        session={session}
-                        setIsUpdate={setIsUpdate}
-                        note={note}
-                        setForm={setForm}
-                        deleteNote={deleteNote}
-                        setModalComponent={setContentModalIsOpen}
-                      />
-                    ))}
-              </div>
+            <div className="mt-12 min-w-[95%] max-w-min mx-auto transition duration-700 ease-in-out grid grid-cols-3  gap-4 w-full dark:text-gray-200">
+              {!notes
+                ? null
+                : notes.map((note) => (
+                    <Card
+                      setSingleNote={setSingleNote}
+                      key={note.id}
+                      note={note}
+                      setForm={setForm}
+                      deleteNote={deleteNote}
+                      setModalComponent={setContentModalIsOpen}
+                    />
+                  ))}
             </div>
           </div>
           <footer className=" pb-6 w-full bg-gray-100 dark:bg-slate-900 dark:text-gray-200 flex align-center items-center justify-center">
@@ -246,6 +169,13 @@ export default function Home() {
               Vinicius Ventura
             </a>
           </footer>
+          <NewNoteModal
+            newNoteModalIsOpen={newNoteModalIsOpen}
+            setNewNoteModalIsOpen={setNewNoteModalIsOpen}
+            form={form}
+            setForm={setForm}
+            session={session}
+          />
           <ContentModal
             modalComponent={contentModalIsOpen}
             setModalComponent={setContentModalIsOpen}
@@ -261,6 +191,14 @@ export default function Home() {
             user={session ? session.data.session?.user : undefined}
             setModalComponent={setUploadModalIsOpen}
             modalComponent={uploadModalIsOpen}
+          />
+          <MenuButton
+            files={files}
+            user={session ? session.data.session?.user : undefined}
+            setNewFileModalIsOpen={setUploadModalIsOpen}
+            setNewNoteModalIsOpen={setNewNoteModalIsOpen}
+            modalComponent={menuIsOpen}
+            setModalComponent={setMenuIsOpen}
           />
         </div>
       )}
