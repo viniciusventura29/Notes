@@ -60,7 +60,7 @@ export function UploadModal({
             e.preventDefault();
           }}
         >
-          <h2 className="text-2xl font-bold mb-4">Upload your file</h2>
+          <h2 className="text-2xl font-bold mb-4 dark:text-white">Upload your file</h2>
           <div className="flex items-center justify-center w-full">
             <label
               htmlFor="dropzone-file"
