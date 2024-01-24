@@ -30,6 +30,7 @@ export type FormData = {
   title: string;
   content: string;
   id: string;
+  authorized_users: string[]
 };
 
 export type SessionUser =

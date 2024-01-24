@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import { Card } from "../components/Card";
 import {
   create,
@@ -40,6 +40,7 @@ export default function Home() {
     title: "",
     content: "",
     id: "",
+    authorized_users: [],
   });
   const [popUp, setPopUp] = useState(false);
   const router = useRouter();
@@ -113,12 +114,6 @@ export default function Home() {
             modalComponent={contentModalIsOpen}
             setModalComponent={setContentModalIsOpen}
             note={singleNote}
-          />
-          <FilesView
-            user={session ? session.data.session?.user : undefined}
-            files={files}
-            setModalComponent={setFilesViewIsOpen}
-            modalComponent={filesViewIsOpen}
           />
           <UploadModal
             user={session ? session.data.session?.user : undefined}

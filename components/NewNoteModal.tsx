@@ -29,7 +29,7 @@ export function NewNoteModal({
           title: "Note created",
           type: "Success",
         });
-        setForm({ content: "", title: "", id: "" });
+        setForm({ content: "", title: "", id: "", authorized_users: [] });
       },
     }
   );
@@ -58,7 +58,10 @@ export function NewNoteModal({
             New Note
           </h1>
           <button
-            onClick={(e) => {setNewNoteModalIsOpen(false);e.preventDefault()}}
+            onClick={(e) => {
+              setNewNoteModalIsOpen(false);
+              e.preventDefault();
+            }}
             className="p-2 bg-red-500 hover:bg-red-600 duration-500 rounded text-xs text-gray-50 font-normal"
           >
             <svg
@@ -92,6 +95,22 @@ export function NewNoteModal({
           onChange={(e) => setForm({ ...form, content: e.target.value })}
           className="transition duration-700 ease-in-out resize-none h-full border rounded border-gray-600 p-2  dark:text-gray-200 dark:bg-slate-800"
         />
+
+        <div className="mt-4">
+          <p className="font-semibold mb-2">
+            Share this note with others users
+          </p>
+          <input
+            placeholder="JonhDoe@hotmail.com"
+            onChange={(e) =>
+              setForm({
+                ...form,
+                authorized_users: [...form.authorized_users, e.target.value],
+              })
+            }
+            className="transition duration-700 ease-in-out w-full border rounded border-gray-600 p-2 dark:text-gray-200 dark:bg-slate-800"
+          />
+        </div>
 
         <div className="flex gap-2 w-full justify-end">
           <button
