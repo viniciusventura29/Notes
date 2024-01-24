@@ -46,6 +46,7 @@ async function create(note: FormData, session: SessionUser) {
         title: note.title,
         content: note.content,
         user: session.data.session?.user.id,
+        authorized_users: note.authorized_users
       },
     ])
     .select();
@@ -63,6 +64,7 @@ async function update(note: FormData, session: SessionUser) {
       title: note.title,
       content: note.content,
       user: session.data.session?.user.id,
+      authorized_users: note.authorized_users
     })
     .eq("id", note.id)
     .select();
