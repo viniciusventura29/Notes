@@ -35,7 +35,7 @@ export function UpdateNoteModal({
   );
   return (
     <div
-      className={`flex justify-center items-center fixed h-screen w-full top-0 ${
+      className={`flex justify-center items-center fixed h-screen w-full top-0 z-20 ${
         updateNoteModalIsOpen ? "" : "hidden"
       }`}
     >
@@ -51,7 +51,7 @@ export function UpdateNoteModal({
           updateNoteMutation.mutate({ session });
           setUpdateNoteModalIsOpen(false);
         }}
-        className="mt-6 space-y-6 flex flex-col bg-gray-50 dark:bg-slate-800 px-8 py-6 z-10 rounded-lg h-[30rem] w-[50rem]"
+        className="mt-6 space-y-6 flex flex-col bg-gray-50 dark:bg-slate-800 px-8 py-6 z-20 rounded-lg h-[30rem] w-[50rem]"
       >
         <div className="flex w-full justify-between items-center">
           <h1 className="transition duration-700 ease-in-out text-center dark:text-white font-bold text-2xl">

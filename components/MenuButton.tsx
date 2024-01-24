@@ -8,8 +8,8 @@ export interface modalProps {
   modalComponent: boolean;
   setNewNoteModalIsOpen: Dispatch<SetStateAction<boolean>>;
   setNewFileModalIsOpen: Dispatch<SetStateAction<boolean>>;
-  files: FileObject[] | undefined
-  user: User | undefined
+  files: FileObject[] | undefined;
+  user: User | undefined;
 }
 
 export function MenuButton({
@@ -18,17 +18,17 @@ export function MenuButton({
   setNewNoteModalIsOpen,
   setNewFileModalIsOpen,
   files,
-  user
+  user,
 }: modalProps) {
   const [filesViewIsOpen, setFilesViewIsOpen] = useState<boolean>(false);
 
   return (
-    <div className="fixed bottom-10 left-14 flex flex-col-reverse items-center gap-3">
+    <div className="z-0 fixed bottom-10 left-10 flex flex-col-reverse items-center gap-3">
       <button
         onClick={() => {
           setModalComponent(!modalComponent);
         }}
-        className="rounded-full bg-blue-500 transition-colors duration-200 hover:bg-blue-600 shadow border dark:border-slate-800 flex justify-center items-center p-4 text-blue-100 w-16 h-16"
+        className="z-0 rounded-full bg-blue-500 transition-colors duration-200 hover:bg-blue-600 shadow border dark:border-slate-800 flex justify-center items-center p-4 text-blue-100 w-16 h-16"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -52,7 +52,10 @@ export function MenuButton({
         className={`flex flex-col gap-4 ${modalComponent ? "" : "invisible"}`}
       >
         <button
-          onClick={() => setNewNoteModalIsOpen(true)}
+          onClick={() => {
+            setNewNoteModalIsOpen(true);
+            setModalComponent(false);
+          }}
           className="w-14 h-14 p-4 bg-blue-500 rounded-full text-white hover:bg-blue-600"
         >
           <svg
@@ -75,6 +78,7 @@ export function MenuButton({
         <button
           onClick={() => {
             setNewFileModalIsOpen(true);
+            setModalComponent(false);
           }}
           className="w-14 h-14 p-4 bg-blue-500 rounded-full text-white hover:bg-blue-600"
         >
@@ -96,9 +100,12 @@ export function MenuButton({
             <path d="M19 16v6" />
           </svg>
         </button>
-        <FilesView files={files} modalComponent={filesViewIsOpen} setModalComponent={setFilesViewIsOpen} user={user} />
-      
-        
+        <FilesView
+          files={files}
+          modalComponent={filesViewIsOpen}
+          setModalComponent={setFilesViewIsOpen}
+          user={user}
+        />
       </div>
     </div>
   );

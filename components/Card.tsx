@@ -70,15 +70,15 @@ export function Card({
   return (
     <>
       <div
+      onClick={(e) => {
+        callModal();
+        e.preventDefault();
+      }}
         key={note.id}
-        className="cursor-pointer shadow flex justify-center rounded bg-slate-200 hover:bg-slate-300 hover:dark:bg-slate-700 dark:bg-slate-800 p-4 px-6 h-32 w-full group"
+        className="cursor-pointer transition duration-700 shadow flex justify-center rounded bg-slate-200 text-black dark:text-white hover:bg-slate-300 hover:dark:bg-slate-700 dark:bg-slate-800 p-4 px-6 h-32 w-full group"
       >
         <div className="flex items-center justify-between w-full">
           <div
-            onClick={(e) => {
-              callModal();
-              e.preventDefault();
-            }}
             className=" h-20 overflow-hidden"
           >
             <div className="flex items-center w-full">
