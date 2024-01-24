@@ -30,11 +30,11 @@ export default function Home() {
     content: "",
     title: "",
     id: "",
+    authorized_users:[]
   });
   const [contentModalIsOpen, setContentModalIsOpen] = useState(false);
   const [updateModalIsOpen, setUpdateModalIsOpen] = useState(false);
   const [uploadModalIsOpen, setUploadModalIsOpen] = useState(false);
-  const [filesViewIsOpen, setFilesViewIsOpen] = useState(false);
   const [newNoteModalIsOpen, setNewNoteModalIsOpen] = useState(false);
   const [form, setForm] = useState<FormData>({
     title: "",

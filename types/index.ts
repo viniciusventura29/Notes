@@ -4,7 +4,7 @@ export type SingleNote ={
     id: string;
     title: string;
     content: string;
-  
+    authorized_users: string[]
 }
 
 export type FileObject={

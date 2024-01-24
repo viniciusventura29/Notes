@@ -54,7 +54,12 @@ export function Card({
 
   function callModal() {
     setModalComponent(true);
-    setSingleNote({ content: note.content, id: note.id, title: note.title });
+    setSingleNote({
+      content: note.content,
+      id: note.id,
+      title: note.title,
+      authorized_users: note.authorized_users,
+    });
   }
 
   useEffect(() => {
@@ -92,6 +97,7 @@ export function Card({
                   title: note.title,
                   content: note.content,
                   id: note.id,
+                  authorized_users: note.authorized_users
                 });
                 setUpdateModalIsOpen(true);
               }}
