@@ -20,7 +20,7 @@ export function ContentModal({ note, setModalComponent, modalComponent }: modalP
         }}
         className="w-full fixed top-0 left-0 backdrop-blur-[3px] backdrop-brightness-90 h-full"
       ></div>
-      <div className="divide-solid divide-y dark:divide-slate-900 shadow-2xl bg-gray-50 dark:bg-slate-800 px-8 py-6 z-20 rounded-lg w-[50rem]">
+      <div className="divide-solid divide-y dark:divide-slate-900 shadow-2xl bg-gray-50 dark:bg-slate-800 px-8 py-6 z-20 rounded-lg w-full md:w-[50rem]">
         <div className="flex justify-between font-bold text-2xl break-words">
           <h1 className="dark:text-white" style={{ overflowWrap: "anywhere" }}>
             {note?.title}

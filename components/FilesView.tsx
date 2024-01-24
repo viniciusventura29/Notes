@@ -44,7 +44,7 @@ export function FilesView({
         onClick={() => {
           setModalComponent(!modalComponent);
         }}
-        className="rounded-full bg-blue-500 transition-colors duration-200 hover:bg-blue-600 shadow border dark:border-slate-800 flex justify-center items-center p-4 text-blue-100 w-14 h-14"
+        className="rounded-full bg-blue-500 transition-colors duration-200 hover:bg-blue-600 shadow border dark:border-slate-800 flex justify-center items-center p-4 text-blue-100 md:w-14 md:h-14 w-12 h-12"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

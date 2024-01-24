@@ -77,7 +77,7 @@ export default function Home() {
               Notes
             </h1>
 
-            <div className="mt-12 min-w-[95%] max-w-min mx-auto transition duration-700 ease-in-out grid grid-cols-3  gap-4 w-full dark:text-gray-200">
+            <div className="mt-12 min-w-[95%] max-w-min mx-auto transition duration-700 ease-in-out grid grid-cols-1 md:grid-cols-3  gap-4 w-full dark:text-gray-200">
               {!notes
                 ? null
                 : notes.map((note) => (

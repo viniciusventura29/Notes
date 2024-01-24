@@ -73,6 +73,7 @@ export function Card({
       onClick={(e) => {
         callModal();
         e.preventDefault();
+        e.stopPropagation()
       }}
         key={note.id}
         className="cursor-pointer transition duration-700 shadow flex justify-center rounded bg-slate-200 text-black dark:text-white hover:bg-slate-300 hover:dark:bg-slate-700 dark:bg-slate-800 p-4 px-6 h-32 w-full group"
@@ -92,7 +93,9 @@ export function Card({
           </div>
           <div className="flex items-center justify-center">
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
                 setForm({
                   title: note.title,
                   content: note.content,
@@ -101,7 +104,7 @@ export function Card({
                 });
                 setUpdateModalIsOpen(true);
               }}
-              className="bg-blue-500 hover:bg-blue-600 mr-3 p-2 text-white rounded invisible group-hover:visible"
+              className="bg-blue-500 hover:bg-blue-600 mr-3 p-2 text-white rounded md:invisible group-hover:visible"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -122,10 +125,12 @@ export function Card({
               </svg>
             </button>
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
                 deleteNoteMutation.mutate({ id: note.id });
               }}
-              className="bg-red-500 hover:bg-red-600 p-2 text-white rounded invisible group-hover:visible"
+              className="bg-red-500 hover:bg-red-600 p-2 text-white rounded md:invisible group-hover:visible"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
