@@ -21,7 +21,7 @@ const getData = async ({
   let { data, error } = await supabase
     .from("notes")
     .select("*")
-    .or(`user.eq.${user.data.session.user.id},authorized_users.eq.{${user.data.session.user.id}}`);
+    .or(`user.eq.${user.data.session.user.id},authorized_users.eq.{${user.data.session.user.email}}`);
 
   if (error) {
     console.log(error);
