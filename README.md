@@ -16,3 +16,4 @@ The notes is a website to support you manage your annotations
 - [ ] Groups can be created to share notes (like tabs I think)
 - [ ] Owner can share notes to users edit or view
 - [ ] Notes categorizing 
+- [ ] Drag and Drop
