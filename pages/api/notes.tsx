@@ -1,5 +1,5 @@
 import { Notes, FormData, SessionUser, FileObject } from "../../types";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, use } from "react";
 import supabase from "./supabaseClient";
 import { User } from "@supabase/supabase-js";
 
@@ -15,10 +15,13 @@ const getData = async ({
   setNotes: Dispatch<SetStateAction<Notes | undefined>>;
 }) => {
   const user = await getUser();
+
+  if (!user || !user.data.session) return;
+
   let { data, error } = await supabase
     .from("notes")
     .select("*")
-    .eq("user", user.data.session?.user.id);
+    .or(`user.eq.${user.data.session.user.id},authorized_users.eq.{${user.data.session.user.id}}`);
 
   if (error) {
     console.log(error);
