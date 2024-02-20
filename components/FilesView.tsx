@@ -64,13 +64,14 @@ export function FilesView({
         </svg>
       </button>
       <div
-        className={`absolute left-16 bottom-24 rounded-md rounded-br-none border dark:border-gray-600 shadow dark:bg-slate-800 bg-slate-100 w-96 h-[32rem] overflow-y-scroll ${
+        className={`absolute sm:left-16 sm:bottom-24 rounded-md rounded-br-none border dark:border-gray-600 shadow dark:bg-slate-800 bg-slate-100 sm:w-96 sm:h-[32rem] w-full h-full overflow-y-scroll ${
           modalComponent ? "" : "hidden"
         }`}
       >
         <h3 className="dark:text-white text-xl justify-center p-4 font-semibold">
           Your Files
         </h3>
+        <button className="text-red-500" onClick={()=>setModalComponent(false)}>X</button>
         {files?.map((file, index) => (
           <div
             key={index}
